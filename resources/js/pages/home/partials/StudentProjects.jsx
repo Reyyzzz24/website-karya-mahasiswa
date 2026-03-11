@@ -63,37 +63,41 @@ const StudentProjects = ({ projects = [] }) => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
                                     whileHover={{ y: -10 }}
-                                    className="group cursor-pointer"
+                                    className="group cursor-pointer relative"
                                     onClick={() => setSelectedProject(project)}
                                 >
-                                    <div className="h-full bg-white dark:bg-[#161616] border border-gray-100 dark:border-white/[0.05] rounded-[32px] overflow-hidden flex flex-col transition-all hover:shadow-2xl dark:hover:shadow-none">
+                                    <div className="relative h-[450px] w-full bg-zinc-900 border border-gray-100 dark:border-white/[0.05] rounded-[32px] overflow-hidden flex flex-col justify-end transition-all hover:shadow-2xl dark:hover:shadow-none">
 
-                                        {/* Image Box */}
-                                        <div className="relative h-60 w-full overflow-hidden">
+                                        {/* Background Image */}
+                                        <div className="absolute inset-0 z-0">
                                             <img
                                                 src={`/storage/${project.project_image}`}
                                                 alt={project.title}
-                                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-60"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                            <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-white">
-                                                <ArrowUpRight size={20} />
-                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10" />
+                                        </div>
+
+                                        {/* Icon Arrow */}
+                                        <div className="absolute top-6 right-6 z-20 bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-all transform -translate-y-4 group-hover:translate-y-0 text-white">
+                                            <ArrowUpRight size={20} />
                                         </div>
 
                                         {/* Content Box */}
-                                        <div className="p-8 flex flex-col flex-grow">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-                                                    {project.nim}
-                                                </span>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                        <div className="relative z-20 p-8 flex flex-col w-full">
+                                            <h3 className="text-2xl font-bold text-white mb-2 line-clamp-2 transition-colors group-hover:text-blue-400">
                                                 {project.title}
                                             </h3>
-                                            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium mt-auto">
-                                                {project.student_name}
-                                            </p>
+
+                                            {/* Baris Nama - NIM yang selalu muncul */}
+                                            <div className="flex items-center gap-2 text-gray-300">
+                                                <p className="text-sm font-medium">
+                                                    {project.student_name} — {project.nim}
+                                                </p>
+                                            </div>
+
+                                            {/* Garis Dekoratif tetap bisa di-hover untuk pemanis */}
+                                            <div className="h-1 w-16 bg-blue-500 rounded-full mt-4 transform scale-x-100 group-hover:w-full transition-all duration-700 origin-left" />
                                         </div>
                                     </div>
                                 </motion.div>

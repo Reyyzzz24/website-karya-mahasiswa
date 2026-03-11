@@ -106,7 +106,7 @@ const Activities = ({ activities = [] }) => {
                 noPadding={true}
             >
                 {selectedActivity && (
-                    <div className="bg-white dark:bg-[#0f0f0f] text-gray-900 dark:text-white transition-colors duration-300 overflow-hidden rounded-t-lg md:rounded-lg">
+                    <div className="bg-white dark:bg-[#0f0f0f] text-gray-900 dark:text-white transition-colors duration-300 overflow-hidden">
                         <div className="relative h-80">
                             <img
                                 src={`/storage/${selectedActivity.photo}`}

@@ -2,15 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    /**
+     * Fungsi ini wajib ada agar Filament mengizinkan login di server production.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Mengembalikan true berarti semua user yang terdaftar di database boleh mencoba login.
+        return true;
+    }
 
     /**
      * The attributes that are mass assignable.

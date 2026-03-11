@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { MapPin, Phone, Mail, Send, CheckCircle2, Globe } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Map, Marker, ZoomControl } from "pigeon-maps"; // Import Pigeon Maps
 
 const Contact = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    // Koordinat lokasi (Contoh: Kampus UNIDA/Ciawi)
+    const center = [-6.6587, 106.8488]; 
 
     const { data, setData, post, processing, reset } = useForm({
         name: '',
@@ -38,9 +41,6 @@ const Contact = () => {
                         viewport={{ once: true }}
                         className="flex items-center gap-3 mb-4"
                     >
-                       {/*  <div className="h-10 w-10 rounded-xl bg-blue-600/10 flex items-center justify-center border border-blue-600/20">
-                            <Mail className="text-blue-600 dark:text-blue-400" size={20} />
-                        </div> */}
                         <span className="text-blue-600 dark:text-blue-500 font-mono tracking-widest text-sm uppercase">Contact Us</span>
                     </motion.div>
                     <h2 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white tracking-tight">
@@ -50,7 +50,7 @@ const Contact = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                     
-                    {/* KIRI: Info & World Map Visual */}
+                    {/* KIRI: Info & Interactive Map */}
                     <div className="lg:col-span-5 space-y-12">
                         <div className="space-y-6">
                             <p className="text-gray-600 dark:text-zinc-400 text-lg leading-relaxed max-w-md">
@@ -59,31 +59,49 @@ const Contact = () => {
                             
                             <div className="flex flex-col gap-4 text-gray-500 dark:text-zinc-500 text-sm font-medium">
                                 <a href="mailto:filkom@unida.ac.id" className="hover:text-blue-500 transition-colors flex items-center gap-2">
-                                    filkom@unida.ac.id
+                                    <Mail size={16} /> filkom@unida.ac.id
                                 </a>
                                 <a href="https://wa.me/6282518240773" className="hover:text-blue-500 transition-colors flex items-center gap-2">
-                                    +62 251 8240 773
+                                    <Phone size={16} /> +62 251 8240 773
                                 </a>
                             </div>
                         </div>
 
-                        {/* World Map Placeholder (Visual ala referensi) */}
-                        <div className="relative h-64 w-full opacity-50 dark:opacity-30 grayscale group">
-                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent blur-3xl" />
-                             <Globe className="w-full h-full text-zinc-300 dark:text-zinc-800" strokeWidth={0.5} />
-                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                <div className="relative">
-                                    <div className="absolute -inset-4 bg-blue-500/40 rounded-full blur-xl animate-pulse" />
-                                    <div className="h-3 w-3 bg-blue-500 rounded-full border-2 border-white dark:border-zinc-900 relative z-10" />
-                                    <div className="absolute top-0 left-5 bg-white dark:bg-zinc-800 px-3 py-1 rounded-lg shadow-xl text-[10px] font-bold dark:text-white whitespace-nowrap border dark:border-white/10">
-                                        We are here
-                                    </div>
+                        {/* Interactive Pigeon Map */}
+                        <div className="relative h-80 w-full rounded-[32px] overflow-hidden border border-gray-200 dark:border-white/5 group">
+                            {/* Overlay Glow */}
+                            <div className="absolute inset-0 z-10 pointer-events-none border-[12px] border-white dark:border-[#0c0c0c] rounded-[32px]" />
+                            
+                            <div className="h-full w-full dark:grayscale dark:invert-[0.9] dark:contrast-[1.2] transition-all duration-700">
+                                <Map 
+                                    height={320} 
+                                    defaultCenter={center} 
+                                    defaultZoom={15}
+                                    metaWheelZoom={true} // Zoom hanya jika tekan Ctrl/Cmd agar tidak mengganggu scroll
+                                >
+                                    <ZoomControl />
+                                    <Marker 
+                                        width={45}
+                                        anchor={center} 
+                                        color="#3b82f6"
+                                        onClick={() => window.open(`https://www.google.com/maps?q=${center[0]},${center[1]}`, '_blank')}
+                                    />
+                                </Map>
+                            </div>
+
+                            {/* Floating Label */}
+                            {/* <div className="absolute top-6 left-6 z-20">
+                                <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md px-4 py-2 rounded-2xl border dark:border-white/10">
+                                    <p className="text-[10px] font-bold dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                        <div className="h-2 w-2 bg-blue-500 rounded-full animate-ping" />
+                                        Our Headquarters
+                                    </p>
                                 </div>
-                             </div>
+                            </div> */}
                         </div>
                     </div>
 
-                    {/* KANAN: Form Card ala Aceternity */}
+                    {/* KANAN: Form Card */}
                     <div className="lg:col-span-7">
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
@@ -91,11 +109,9 @@ const Contact = () => {
                             viewport={{ once: true }}
                             className="relative group"
                         >
-                            {/* Card Background dengan Grid Effect */}
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-[32px] opacity-0 group-hover:opacity-10 transition duration-500" />
                             
-                            <div className="relative bg-white dark:bg-[#0c0c0c] p-8 md:p-12 rounded-[32px] border border-gray-100 dark:border-white/[0.05] shadow-2xl shadow-gray-200/50 dark:shadow-none overflow-hidden">
-                                {/* Subtle Grid Pattern */}
+                            <div className="relative bg-white dark:bg-[#0c0c0c] p-8 md:p-12 rounded-[32px] border border-gray-100 dark:border-white/[0.05] overflow-hidden">
                                 <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[length:32px_32px] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)]" />
                                 
                                 <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
@@ -108,7 +124,7 @@ const Contact = () => {
                                                 onChange={e => setData('name', e.target.value)}
                                                 placeholder="Your Name"
                                                 required
-                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                                             />
                                         </div>
                                         <div className="space-y-2">
@@ -119,7 +135,7 @@ const Contact = () => {
                                                 onChange={e => setData('email', e.target.value)}
                                                 placeholder="Your Email Address"
                                                 required
-                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
                                             />
                                         </div>
                                     </div>
@@ -132,7 +148,7 @@ const Contact = () => {
                                             onChange={e => setData('message', e.target.value)}
                                             placeholder="Type your message here..."
                                             required
-                                            className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                            className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
                                         />
                                     </div>
 
@@ -153,7 +169,7 @@ const Contact = () => {
                 </div>
             </div>
 
-            {/* Success Modal yang Diperhalus */}
+            {/* Success Modal */}
             <AnimatePresence>
                 {showSuccessModal && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
@@ -168,7 +184,7 @@ const Contact = () => {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative bg-white dark:bg-[#0c0c0c] p-10 rounded-[40px] shadow-2xl max-w-sm w-full text-center border dark:border-white/10"
+                            className="relative bg-white dark:bg-[#0c0c0c] p-10 rounded-[40px] max-w-sm w-full text-center border dark:border-white/10"
                         >
                             <div className="w-20 h-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle2 size={40} />
