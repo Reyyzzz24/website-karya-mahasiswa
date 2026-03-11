@@ -1,10 +1,10 @@
-import React, { useState } from 'react'; // Tambah useState
+import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { MapPin, Phone, Mail, Send, CheckCircle2 } from 'lucide-react'; // Tambah CheckCircle2
-import { motion, AnimatePresence } from 'framer-motion'; // Tambah AnimatePresence
+import { MapPin, Phone, Mail, Send, CheckCircle2, Globe } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Contact = () => {
-    const [showSuccessModal, setShowSuccessModal] = useState(false); // State untuk Modal
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const { data, setData, post, processing, reset } = useForm({
         name: '',
@@ -14,219 +14,172 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         fetch("https://formspree.io/f/xrbgknkv", {
             method: "POST",
             body: JSON.stringify(data),
             headers: { 'Accept': 'application/json' }
         }).then(response => {
             if (response.ok) {
-                setShowSuccessModal(true); // Ganti alert dengan modal
+                setShowSuccessModal(true);
                 reset();
             }
         });
     };
 
-    // Variabel animasi untuk daftar kontak (stagger)
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { opacity: 0, x: 20 },
-        visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
-    };
-
     return (
-        <section id="hubungi" className="py-16 bg-white dark:bg-gray-900">
+        <section id="hubungi" className="py-24 bg-gray-50 dark:bg-[#030303] transition-colors duration-500 overflow-hidden">
             <div className="container mx-auto px-6 max-w-6xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                {/* Header Section */}
+                <div className="mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="flex items-center gap-3 mb-4"
+                    >
+                       {/*  <div className="h-10 w-10 rounded-xl bg-blue-600/10 flex items-center justify-center border border-blue-600/20">
+                            <Mail className="text-blue-600 dark:text-blue-400" size={20} />
+                        </div> */}
+                        <span className="text-blue-600 dark:text-blue-500 font-mono tracking-widest text-sm uppercase">Contact Us</span>
+                    </motion.div>
+                    <h2 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white tracking-tight">
+                        Let's build something <span className="text-gray-400 dark:text-zinc-600">together.</span>
+                    </h2>
+                </div>
 
-                    {/* KIRI: Form Card */}
-                    <div className="lg:pl-8">
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="bg-white dark:bg-background p-8 md:p-10 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-zinc-800"
-                        >
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">Name</label>
-                                    <input
-                                        type="text"
-                                        value={data.name}
-                                        onChange={e => setData('name', e.target.value)}
-                                        placeholder="Your Name"
-                                        required
-                                        className="w-full px-4 py-4 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-background text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">Email</label>
-                                    <input
-                                        type="email"
-                                        value={data.email}
-                                        onChange={e => setData('email', e.target.value)}
-                                        placeholder="example@mail.com"
-                                        required
-                                        className="w-full px-4 py-4 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-background text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 dark:text-zinc-300 mb-2">Message</label>
-                                    <textarea
-                                        rows={4}
-                                        value={data.message}
-                                        onChange={e => setData('message', e.target.value)}
-                                        placeholder="Write your message here..."
-                                        required
-                                        className="w-full px-4 py-4 rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-background text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"
-                                    />
-                                </div>
-                                <motion.div
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="w-full flex items-center justify-center gap-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 px-6 rounded-xl transition-all disabled:opacity-50"
-                                    >
-                                        {processing ? (
-                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        ) : (
-                                            <>
-                                                <Send size={18} />
-                                                <span>Send Message</span>
-                                            </>
-                                        )}
-                                    </button>
-                                </motion.div>
-                            </form>
-                        </motion.div>
-                    </div>
-
-                    {/* KANAN: Contact Info */}
-                    <div className="lg:pl-8">
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="mb-12"
-                        >
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4 text-center">
-                                Hubungi <span className="text-cyan-600 dark:text-cyan-400">Kami</span>
-                            </h2>
-                            <p className="text-center text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-12 px-4">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    {/* KIRI: Info & World Map Visual */}
+                    <div className="lg:col-span-5 space-y-12">
+                        <div className="space-y-6">
+                            <p className="text-gray-600 dark:text-zinc-400 text-lg leading-relaxed max-w-md">
                                 Silakan hubungi kami melalui formulir atau klik kontak di bawah ini untuk terhubung langsung dengan tim kami.
                             </p>
-                        </motion.div>
+                            
+                            <div className="flex flex-col gap-4 text-gray-500 dark:text-zinc-500 text-sm font-medium">
+                                <a href="mailto:filkom@unida.ac.id" className="hover:text-blue-500 transition-colors flex items-center gap-2">
+                                    filkom@unida.ac.id
+                                </a>
+                                <a href="https://wa.me/6282518240773" className="hover:text-blue-500 transition-colors flex items-center gap-2">
+                                    +62 251 8240 773
+                                </a>
+                            </div>
+                        </div>
 
-                        <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            className="space-y-8"
-                        >
-                            {/* Address - Redirect ke Google Maps */}
-                            <motion.a
-                                href="https://www.google.com/maps/search/?api=1&query=Universitas+Djuanda"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                variants={itemVariants}
-                                className="flex items-start gap-6 group cursor-pointer"
-                            >
-                                <div className="flex-shrink-0 w-14 h-14 bg-white dark:bg-zinc-800 shadow-sm border border-gray-100 dark:border-zinc-700 text-cyan-600 dark:text-cyan-400 rounded-2xl flex items-center justify-center group-hover:bg-cyan-600 dark:group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 transform group-hover:-rotate-6">
-                                    <MapPin size={26} />
+                        {/* World Map Placeholder (Visual ala referensi) */}
+                        <div className="relative h-64 w-full opacity-50 dark:opacity-30 grayscale group">
+                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent blur-3xl" />
+                             <Globe className="w-full h-full text-zinc-300 dark:text-zinc-800" strokeWidth={0.5} />
+                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <div className="relative">
+                                    <div className="absolute -inset-4 bg-blue-500/40 rounded-full blur-xl animate-pulse" />
+                                    <div className="h-3 w-3 bg-blue-500 rounded-full border-2 border-white dark:border-zinc-900 relative z-10" />
+                                    <div className="absolute top-0 left-5 bg-white dark:bg-zinc-800 px-3 py-1 rounded-lg shadow-xl text-[10px] font-bold dark:text-white whitespace-nowrap border dark:border-white/10">
+                                        We are here
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="text-sm font-bold text-3xl text-gray-400 dark:text-zinc-500 mb-1">Address</h4>
-                                    <p className="text-gray-800 dark:text-zinc-200 font-medium leading-snug group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-                                        Jl. Tol Ciawi No.1 Bogor 16720<br />
-                                        Jawa Barat, Indonesia
-                                    </p>
-                                </div>
-                            </motion.a>
-
-                            {/* Phone - Redirect ke WhatsApp */}
-                            <motion.a
-                                href="https://wa.me/6282518240773"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                variants={itemVariants}
-                                className="flex items-start gap-6 group cursor-pointer"
-                            >
-                                <div className="flex-shrink-0 w-14 h-14 bg-white dark:bg-zinc-800 shadow-sm border border-gray-100 dark:border-zinc-700 text-cyan-600 dark:text-cyan-400 rounded-2xl flex items-center justify-center group-hover:bg-cyan-600 dark:group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 transform group-hover:-rotate-6">
-                                    <Phone size={26} />
-                                </div>
-                                <div>
-                                    <h4 className="text-sm font-bold text-3xl text-gray-400 dark:text-zinc-500 mb-1">Phone</h4>
-                                    <p className="text-gray-800 dark:text-zinc-200 font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-                                        0251-8240-773
-                                    </p>
-                                </div>
-                            </motion.a>
-
-                            {/* Email - Redirect ke Aplikasi Email */}
-                            <motion.a
-                                href="mailto:filkom@unida.ac.id"
-                                variants={itemVariants}
-                                className="flex items-start gap-6 group cursor-pointer"
-                            >
-                                <div className="flex-shrink-0 w-14 h-14 bg-white dark:bg-zinc-800 shadow-sm border border-gray-100 dark:border-zinc-700 text-cyan-600 dark:text-cyan-400 rounded-2xl flex items-center justify-center group-hover:bg-cyan-600 dark:group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 transform group-hover:-rotate-6">
-                                    <Mail size={26} />
-                                </div>
-                                <div>
-                                    <h4 className="text-sm font-bold text-3xl text-gray-400 dark:text-zinc-500 mb-1">Email</h4>
-                                    <p className="text-gray-800 dark:text-zinc-200 font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-                                        filkom@unida.ac.id
-                                    </p>
-                                </div>
-                            </motion.a>
-                        </motion.div>
+                             </div>
+                        </div>
                     </div>
 
+                    {/* KANAN: Form Card ala Aceternity */}
+                    <div className="lg:col-span-7">
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="relative group"
+                        >
+                            {/* Card Background dengan Grid Effect */}
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-[32px] opacity-0 group-hover:opacity-10 transition duration-500" />
+                            
+                            <div className="relative bg-white dark:bg-[#0c0c0c] p-8 md:p-12 rounded-[32px] border border-gray-100 dark:border-white/[0.05] shadow-2xl shadow-gray-200/50 dark:shadow-none overflow-hidden">
+                                {/* Subtle Grid Pattern */}
+                                <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[length:32px_32px] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)]" />
+                                
+                                <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 dark:text-zinc-500">Name</label>
+                                            <input
+                                                type="text"
+                                                value={data.name}
+                                                onChange={e => setData('name', e.target.value)}
+                                                placeholder="Your Name"
+                                                required
+                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 dark:text-zinc-500">Email Address</label>
+                                            <input
+                                                type="email"
+                                                value={data.email}
+                                                onChange={e => setData('email', e.target.value)}
+                                                placeholder="Your Email Address"
+                                                required
+                                                className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 dark:text-zinc-500">Message</label>
+                                        <textarea
+                                            rows={5}
+                                            value={data.message}
+                                            onChange={e => setData('message', e.target.value)}
+                                            placeholder="Type your message here..."
+                                            required
+                                            className="w-full bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-white/[0.05] rounded-2xl px-5 py-4 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none placeholder:text-gray-300 dark:placeholder:text-zinc-700"
+                                        />
+                                    </div>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        type="submit"
+                                        disabled={processing}
+                                        className="w-full md:w-max px-12 py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-3"
+                                    >
+                                        {processing ? 'Sending...' : 'Submit'}
+                                        {!processing && <Send size={16} />}
+                                    </motion.button>
+                                </form>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </div>
+
+            {/* Success Modal yang Diperhalus */}
             <AnimatePresence>
                 {showSuccessModal && (
-                    <div className="fixed inset-0 z-[99] flex items-center justify-center px-4">
-                        {/* Backdrop */}
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setShowSuccessModal(false)}
-                            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
                         />
-
-                        {/* Modal Content */}
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-gray-100 dark:border-zinc-800"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="relative bg-white dark:bg-[#0c0c0c] p-10 rounded-[40px] shadow-2xl max-w-sm w-full text-center border dark:border-white/10"
                         >
-                            <div className="w-20 h-20 bg-cyan-100 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div className="w-20 h-20 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle2 size={40} />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pesan Terkirim!</h3>
-                            <p className="text-gray-500 dark:text-zinc-400 mb-8">
-                                Terima kasih telah menghubungi kami. Tim kami akan segera merespons pesan Anda.
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Pesan Terkirim!</h3>
+                            <p className="text-gray-500 dark:text-zinc-500 mb-8 text-sm">
+                                Tim kami akan segera merespons pesan Anda.
                             </p>
                             <button
                                 onClick={() => setShowSuccessModal(false)}
-                                className="w-full py-4 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-xl transition-all"
+                                className="w-full py-4 bg-gray-100 dark:bg-zinc-800 dark:text-white font-bold rounded-2xl transition-all"
                             >
                                 Tutup
                             </button>

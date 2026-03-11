@@ -19,11 +19,11 @@ class HomeController extends Controller
             ->with('children')
             ->orderBy('order_priority')
             ->get();
-            
+
         $logo = Navbar::where('order_priority', 0)->first();
-        $hero = HeroSection::active()->first();
+        $hero = HeroSection::active()->get();
         $projects = StudentProject::latest()->get();
-        
+
         // 2. Ambil data kegiatan (menggunakan latest agar yang terbaru muncul duluan)
         $activities = Activity::latest()->get();
 

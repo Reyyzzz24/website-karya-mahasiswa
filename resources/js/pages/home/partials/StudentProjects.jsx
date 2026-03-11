@@ -3,13 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, ExternalLink, Search, X } from "lucide-react"; // Tambah Search & X
+import { Search, X, MapPin, ExternalLink, ArrowUpRight, BookOpen } from "lucide-react";
 
 const StudentProjects = ({ projects = [] }) => {
     const [selectedProject, setSelectedProject] = useState(null);
-    const [searchQuery, setSearchQuery] = useState(""); // State untuk search
+    const [searchQuery, setSearchQuery] = useState("");
 
-    // Logika Filtering: Mencari berdasarkan judul, nama mahasiswa, atau NIM
     const filteredProjects = projects.filter((project) => {
         const query = searchQuery.toLowerCase();
         return (
@@ -20,88 +19,95 @@ const StudentProjects = ({ projects = [] }) => {
     });
 
     return (
-        <section id='karya' className="py-16 bg-gray-50 dark:bg-gray-950">
-            <div className="container mx-auto px-6 max-w-6xl">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4 text-center">
-                    Karya Mahasiswa
-                </h2>
-                <div className="h-1.5 w-20 bg-cyan-500 mx-auto rounded-full mb-6"></div>
+        <section id='karya' className="py-24 bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
+            <div className="container mx-auto px-6 max-w-7xl">
 
-                <p className="text-center text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-8 px-4">
-                    Kumpulan inovasi dan riset terbaik dari mahasiswa kami.
-                </p>
+                {/* Header ala Hero Section Referensi */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+                    <div className="space-y-4">
+                        <span className="text-blue-600 dark:text-blue-500 font-mono tracking-widest uppercase text-sm">
+                            Showcase Inovasi
+                        </span>
+                        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            Karya <span className="text-gray-400 dark:text-gray-500">Mahasiswa.</span>
+                        </h2>
+                    </div>
 
-                {/* --- INPUT SEARCH --- */}
-                <div className="max-w-md mx-auto mb-12 relative group">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-cyan-500 transition-colors" size={20} />
+                    {/* Search Bar yang lebih modern */}
+                    <div className="relative w-full md:w-80 group">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors" size={18} />
                         <input
                             type="text"
-                            placeholder="Cari judul, nama, atau NIM..."
+                            placeholder="Cari karya..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-12 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-sm focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all dark:text-white"
+                            className="w-full pl-12 pr-10 py-3 bg-gray-50 dark:bg-[#161616] border border-gray-200 dark:border-white/10 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all dark:text-white text-sm"
                         />
                         {searchQuery && (
-                            <button 
-                                onClick={() => setSearchQuery("")}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-                            >
-                                <X size={18} />
+                            <button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <X size={14} />
                             </button>
                         )}
                     </div>
                 </div>
 
-                {/* --- GRID PROJECTS --- */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Grid Projects dengan visual gambar yang kuat */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <AnimatePresence mode='popLayout'>
                         {filteredProjects.length > 0 ? (
                             filteredProjects.map((project) => (
                                 <motion.div
                                     key={project.id}
-                                    layout // Animasi perpindahan posisi saat filter
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    whileHover={{ y: -8 }}
-                                    className="h-[400px] w-full cursor-pointer"
+                                    layout
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    whileHover={{ y: -10 }}
+                                    className="group cursor-pointer"
                                     onClick={() => setSelectedProject(project)}
                                 >
-                                    <Card className="relative h-full w-full overflow-hidden rounded-2xl border-0 shadow-lg group">
-                                        <div className="absolute inset-0 bg-gray-200">
-                                            {project.project_image && (
-                                                <img
-                                                    src={`/storage/${project.project_image}`}
-                                                    alt={project.title}
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                />
-                                            )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                    <div className="h-full bg-white dark:bg-[#161616] border border-gray-100 dark:border-white/[0.05] rounded-[32px] overflow-hidden flex flex-col transition-all hover:shadow-2xl dark:hover:shadow-none">
+
+                                        {/* Image Box */}
+                                        <div className="relative h-60 w-full overflow-hidden">
+                                            <img
+                                                src={`/storage/${project.project_image}`}
+                                                alt={project.title}
+                                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                            <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 text-white">
+                                                <ArrowUpRight size={20} />
+                                            </div>
                                         </div>
-                                        <div className="relative h-full p-6 flex flex-col justify-end text-white">
-                                            <h3 className="text-xl font-bold leading-tight">{project.title}</h3>
-                                            <p className="text-sm text-gray-300 mt-1">
-                                                {project.student_name} - {project.nim}
+
+                                        {/* Content Box */}
+                                        <div className="p-8 flex flex-col flex-grow">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+                                                    {project.nim}
+                                                </span>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                {project.title}
+                                            </h3>
+                                            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium mt-auto">
+                                                {project.student_name}
                                             </p>
                                         </div>
-                                    </Card>
+                                    </div>
                                 </motion.div>
                             ))
                         ) : (
-                            <motion.div 
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="col-span-full py-20 text-center text-gray-500"
-                            >
-                                <p className="text-lg italic">Tidak ada karya yang sesuai dengan pencarian Anda.</p>
+                            <motion.div className="col-span-full py-20 text-center">
+                                <p className="text-gray-500 italic">Karya tidak ditemukan...</p>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             </div>
 
-            {/* --- MODAL (Tetap sama) --- */}
+            {/* Modal Detail Modern */}
             <Modal
                 isOpen={!!selectedProject}
                 onClose={() => setSelectedProject(null)}
@@ -110,58 +116,67 @@ const StudentProjects = ({ projects = [] }) => {
                 noPadding={true}
             >
                 {selectedProject && (
-                    <div className="flex flex-col">
-                        <div className="relative h-72 w-full shrink-0">
+                    <div className="bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
+                        <div className="relative h-80 w-full">
                             <img
                                 src={`/storage/${selectedProject.project_image}`}
                                 alt={selectedProject.title}
                                 className="w-full h-full object-cover"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0f0f0f] to-transparent" />
                         </div>
 
-                        <div className="p-8 space-y-6">
-                            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+                        <div className="p-10 -mt-12 relative z-10">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
                                 {selectedProject.title}
                             </h2>
 
-                            <div>
-                                <h4 className="font-bold text-xs text-gray-500 uppercase tracking-widest mb-2">Deskripsi</h4>
-                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {selectedProject.description}
-                                </p>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 dark:bg-zinc-800/50 p-5 rounded-2xl">
-                                <DetailField label="Mahasiswa" value={selectedProject.student_name} />
-                                <DetailField label="NIM" value={selectedProject.nim} />
-                                <DetailField label="Pembimbing 1" value={selectedProject.supervisor_1} />
-                                <DetailField label="Pembimbing 2" value={selectedProject.supervisor_2} />
-                                <div className="md:col-span-2">
-                                    <DetailField label="Pembimbing Akademik" value={selectedProject.academic_advisor} />
+                            <div className="space-y-8">
+                                <div>
+                                    <h4 className="text-[10px] font-bold text-blue-600 dark:text-blue-500 uppercase tracking-widest mb-3">Abstrak / Deskripsi</h4>
+                                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg italic">
+                                        "{selectedProject.description}"
+                                    </p>
                                 </div>
-                            </div>
 
-                            <div className="border-t pt-6 flex justify-between items-center">
-                                <div className="flex gap-2">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 dark:bg-[#161616] p-8 rounded-[24px] border border-gray-100 dark:border-white/5">
+                                    <DetailField label="Nama Mahasiswa" value={selectedProject.student_name} />
+                                    <DetailField label="NIM" value={selectedProject.nim} />
+                                    <DetailField label="Pembimbing 1" value={selectedProject.supervisor_1} />
+                                    <DetailField label="Pembimbing 2" value={selectedProject.supervisor_2} />
+                                    <div className="md:col-span-2">
+                                        <DetailField label="Pembimbing Akademik" value={selectedProject.academic_advisor} />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap gap-4 pt-4">
+                                    {/* Tombol Lihat Project */}
                                     {selectedProject.project_url && (
-                                        <a href={selectedProject.project_url} target="_blank" rel="noreferrer">
-                                            <Button variant="secondary" className="gap-2">
-                                                <ExternalLink size={16} /> Link Project
+                                        <a href={selectedProject.project_url} target="_blank" rel="noreferrer" className="flex-1">
+                                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full py-6">
+                                                <ExternalLink size={18} className="mr-2" /> Lihat Project
                                             </Button>
                                         </a>
                                     )}
+
+                                    {/* Tombol Lihat Jurnal */}
                                     {selectedProject.journal_url && (
-                                        <a href={selectedProject.journal_url} target="_blank" rel="noreferrer">
-                                            <Button variant="secondary" className="gap-2">
-                                                <ExternalLink size={16} /> Link Jurnal
+                                        <a href={selectedProject.journal_url} target="_blank" rel="noreferrer" className="flex-1">
+                                            <Button variant="outline" className="w-full rounded-full py-6 border-gray-200 dark:border-white/10 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 transition-all">
+                                                <BookOpen size={18} className="mr-2 text-blue-500" /> Lihat Jurnal
                                             </Button>
                                         </a>
                                     )}
+
+                                    {/* Tombol Tutup */}
+                                    <Button
+                                        onClick={() => setSelectedProject(null)}
+                                        variant="outline"
+                                        className="rounded-full py-6 px-10 border-gray-200 dark:border-white/10 dark:text-white"
+                                    >
+                                        Tutup
+                                    </Button>
                                 </div>
-                                <Button onClick={() => setSelectedProject(null)} variant="outline">
-                                    Tutup
-                                </Button>
                             </div>
                         </div>
                     </div>
@@ -172,9 +187,9 @@ const StudentProjects = ({ projects = [] }) => {
 };
 
 const DetailField = ({ label, value }) => (
-    <div>
-        <p className="text-[10px] uppercase tracking-wider font-bold text-gray-400">{label}</p>
-        <p className="font-semibold text-gray-900 dark:text-gray-100 mt-0.5">{value || '-'}</p>
+    <div className="space-y-1">
+        <p className="text-[9px] uppercase tracking-[0.2em] font-bold text-gray-400 dark:text-gray-500">{label}</p>
+        <p className="font-bold text-gray-900 dark:text-white text-base">{value || '-'}</p>
     </div>
 );
 
