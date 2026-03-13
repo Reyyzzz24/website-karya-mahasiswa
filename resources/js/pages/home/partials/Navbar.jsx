@@ -96,13 +96,13 @@ const Navbar = ({ menus, logo }) => {
                 <div className="absolute top-full -left-4 pt-2 hidden group-hover:block w-48 animate-in fade-in slide-in-from-top-2">
                   <div className="bg-white dark:bg-zinc-900 shadow-xl border border-gray-100 dark:border-white/5 py-2 rounded-xl">
                     {menu.children.map((child) => (
-                      <a key={child.id} href={child.url} className="block px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">{child.title}</a>
+                      <a key={child.id} href={child.url} target={child.target || '_self'} rel="noopener noreferrer" className="block px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">{child.title}</a>
                     ))}
                   </div>
                 </div>
               </div>
             ) : (
-              <a key={menu.id} href={menu.url} className="text-sm/6 font-semibold text-white/80 hover:text-white transition-colors">{menu.title}</a>
+              <a key={menu.id} href={menu.url} target={menu.target || '_self'} rel="noopener noreferrer" className="text-sm/6 font-semibold text-white/80 hover:text-white transition-colors">{menu.title}</a>
             )
           ))}
         </div>
@@ -111,7 +111,7 @@ const Navbar = ({ menus, logo }) => {
           <button onClick={toggleTheme} className="p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all active:scale-95">
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <a href="/login" className="hidden lg:block text-sm/6 font-semibold text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all border border-white/10">Log in</a>
+          {/* <a href="/login" className="hidden lg:block text-sm/6 font-semibold text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all border border-white/10">Log in</a> */}
           <div className="flex lg:hidden">
             <button type="button" onClick={() => setMobileMenuOpen(true)} className="p-2 text-white">
               <Menu className="size-6" />
@@ -177,7 +177,7 @@ const Navbar = ({ menus, logo }) => {
                             >
                               <div className="pl-4 space-y-4 border-l-2 border-cyan-500/50 mt-2 mb-4">
                                 {menu.children.map((child) => (
-                                  <a key={child.id} href={child.url} onClick={() => setMobileMenuOpen(false)} className="block text-lg font-medium text-zinc-400 active:text-white">{child.title}</a>
+                                  <a key={child.id} href={child.url} target={child.target || '_self'} rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-lg font-medium text-zinc-400 active:text-white">{child.title}</a>
                                 ))}
                               </div>
                             </motion.div>
@@ -185,7 +185,7 @@ const Navbar = ({ menus, logo }) => {
                         </AnimatePresence>
                       </>
                     ) : (
-                      <a href={menu.url} onClick={() => setMobileMenuOpen(false)} className="block py-3 text-2xl font-bold text-white active:text-cyan-500 transition-colors">{menu.title}</a>
+                      <a href={menu.url} target={menu.target || '_self'} rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-2xl font-bold text-white active:text-cyan-500 transition-colors">{menu.title}</a>
                     )}
                   </motion.div>
                 );
@@ -196,7 +196,7 @@ const Navbar = ({ menus, logo }) => {
                 variants={itemVariants}
                 className="pt-6 mt-4"
               >
-                <a href="/login" className="block text-xl font-bold text-cyan-500">Log in &rarr;</a>
+                {/* <a href="/login" className="block text-xl font-bold text-cyan-500">Log in &rarr;</a> */}
               </motion.div>
             </div>
           </motion.div>

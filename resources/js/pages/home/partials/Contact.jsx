@@ -2,12 +2,20 @@ import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { MapPin, Phone, Mail, Send, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Map, Marker, ZoomControl } from "pigeon-maps"; // Import Pigeon Maps
 
-const Contact = () => {
+const Contact = ({ data: contactData }) => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    // Koordinat lokasi (Contoh: Kampus UNIDA/Ciawi)
-    const center = [-6.6587, 106.8488]; 
+
+    const email = contactData?.email || "filkom@unida.ac.id";
+    const phone = contactData?.phone_number || "+62 251 8240 773";
+
+    // Fungsi format untuk link WhatsApp (08 -> 628)
+    const formatWA = (num) => {
+        let cleaned = num.replace(/\D/g, '');
+        return cleaned.startsWith('0') ? '62' + cleaned.substring(1) : cleaned;
+    };
+
+    const waLink = `https://wa.me/${formatWA(phone)}`;
 
     const { data, setData, post, processing, reset } = useForm({
         name: '',
@@ -32,7 +40,7 @@ const Contact = () => {
     return (
         <section id="hubungi" className="py-24 bg-gray-50 dark:bg-[#030303] transition-colors duration-500 overflow-hidden">
             <div className="container mx-auto px-6 max-w-6xl">
-                
+
                 {/* Header Section */}
                 <div className="mb-20">
                     <motion.div
@@ -44,60 +52,46 @@ const Contact = () => {
                         <span className="text-blue-600 dark:text-blue-500 font-mono tracking-widest text-sm uppercase">Contact Us</span>
                     </motion.div>
                     <h2 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white tracking-tight">
-                        Let's build something <span className="text-gray-400 dark:text-zinc-600">together.</span>
+                        Hubungi <span className="text-cyan-500 dark:text-cyan-600">Kami.</span>
                     </h2>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    
+
                     {/* KIRI: Info & Interactive Map */}
                     <div className="lg:col-span-5 space-y-12">
                         <div className="space-y-6">
                             <p className="text-gray-600 dark:text-zinc-400 text-lg leading-relaxed max-w-md">
                                 Silakan hubungi kami melalui formulir atau klik kontak di bawah ini untuk terhubung langsung dengan tim kami.
                             </p>
-                            
+
                             <div className="flex flex-col gap-4 text-gray-500 dark:text-zinc-500 text-sm font-medium">
-                                <a href="mailto:filkom@unida.ac.id" className="hover:text-blue-500 transition-colors flex items-center gap-2">
-                                    <Mail size={16} /> filkom@unida.ac.id
+                                <a href={`mailto:${email}`} className="hover:text-blue-500 transition-colors flex items-center gap-2">
+                                    <Mail size={16} /> {email}
                                 </a>
-                                <a href="https://wa.me/6282518240773" className="hover:text-blue-500 transition-colors flex items-center gap-2">
-                                    <Phone size={16} /> +62 251 8240 773
+                                <a href={waLink} target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors flex items-center gap-2">
+                                    <Phone size={16} /> {phone}
                                 </a>
                             </div>
                         </div>
 
-                        {/* Interactive Pigeon Map */}
-                        <div className="relative h-80 w-full rounded-[32px] overflow-hidden border border-gray-200 dark:border-white/5 group">
-                            {/* Overlay Glow */}
-                            <div className="absolute inset-0 z-10 pointer-events-none border-[12px] border-white dark:border-[#0c0c0c] rounded-[32px]" />
-                            
-                            <div className="h-full w-full dark:grayscale dark:invert-[0.9] dark:contrast-[1.2] transition-all duration-700">
-                                <Map 
-                                    height={320} 
-                                    defaultCenter={center} 
-                                    defaultZoom={15}
-                                    metaWheelZoom={true} // Zoom hanya jika tekan Ctrl/Cmd agar tidak mengganggu scroll
-                                >
-                                    <ZoomControl />
-                                    <Marker 
-                                        width={45}
-                                        anchor={center} 
-                                        color="#3b82f6"
-                                        onClick={() => window.open(`https://www.google.com/maps?q=${center[0]},${center[1]}`, '_blank')}
-                                    />
-                                </Map>
-                            </div>
+                        {/* Google Maps Iframe */}
+                        <div className="relative h-80 w-full overflow-hidden group">
+                            {/* Overlay Glow / Frame */}
+                            <div className="absolute inset-0 z-10 pointer-events-none border-1 border-gray-200 dark:border-white/5" />
 
-                            {/* Floating Label */}
-                            {/* <div className="absolute top-6 left-6 z-20">
-                                <div className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md px-4 py-2 rounded-2xl border dark:border-white/10">
-                                    <p className="text-[10px] font-bold dark:text-white uppercase tracking-wider flex items-center gap-2">
-                                        <div className="h-2 w-2 bg-blue-500 rounded-full animate-ping" />
-                                        Our Headquarters
-                                    </p>
-                                </div>
-                            </div> */}
+                            <div className="h-full w-full dark:grayscale dark:invert-[0.9] dark:contrast-[1.2] transition-all duration-700">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.9402526318186!2d106.84662397573618!3d-6.654327965053218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c9e3579e3571%3A0xc9285d678295aef0!2sFakultas%20Ilmu%20Komputer!5e0!3m2!1sid!2sid!4v1773386234127!5m2!1sid!2sid"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen={true}
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Google Maps Lokasi UNIDA"
+                                ></iframe>
+                            </div>
                         </div>
                     </div>
 
@@ -110,10 +104,10 @@ const Contact = () => {
                             className="relative group"
                         >
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-[32px] opacity-0 group-hover:opacity-10 transition duration-500" />
-                            
+
                             <div className="relative bg-white dark:bg-[#0c0c0c] p-8 md:p-12 rounded-[32px] border border-gray-100 dark:border-white/[0.05] overflow-hidden">
                                 <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none bg-[length:32px_32px] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)]" />
-                                
+
                                 <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-2">

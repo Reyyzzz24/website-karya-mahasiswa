@@ -18,7 +18,7 @@ const Hero = ({ data }) => {
   const slides = Array.isArray(data) ? data : [data];
 
   return (
-    <section className="relative w-full h-[650px] bg-black overflow-hidden">
+    <section className="relative w-full h-[720px] bg-black overflow-hidden">
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         spaceBetween={0}
@@ -44,7 +44,7 @@ const Hero = ({ data }) => {
               />
 
               {/* Dark Overlay for better text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
 
               {/* Content Container - Rata Kiri */}
               <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
@@ -63,7 +63,7 @@ const Hero = ({ data }) => {
                       const isLast = index === array.length - 1;
                       return (
                         <React.Fragment key={index}>
-                          <span className={isLast ? "text-gray-400 dark:text-zinc-600" : ""}>
+                          <span className={isLast ? "text-cyan-400 dark:text-cyan-600" : ""}>
                             {word}
                           </span>
                           {index < array.length - 1 && ' '}
