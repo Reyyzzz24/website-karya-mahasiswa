@@ -166,7 +166,7 @@ const StudentProjects = ({ projects = [] }) => {
             <Modal
                 isOpen={!!selectedProject}
                 onClose={() => setSelectedProject(null)}
-                title=""
+                title="Detail Karya Mahasiswa"
                 maxWidth="3xl"
                 noPadding={true}
             >
@@ -204,11 +204,11 @@ const StudentProjects = ({ projects = [] }) => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap gap-4 pt-4">
+                                <div className="flex flex-wrap gap-4 pt-2">
                                     {/* Tombol Lihat Project */}
                                     {selectedProject.project_url && (
                                         <a href={selectedProject.project_url} target="_blank" rel="noreferrer" className="flex-1">
-                                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full py-6">
+                                            <Button variant="default" size='lg' className="w-full flex-1">
                                                 <ExternalLink size={18} className="mr-2" /> Lihat Project
                                             </Button>
                                         </a>
@@ -217,7 +217,7 @@ const StudentProjects = ({ projects = [] }) => {
                                     {/* Tombol Lihat Jurnal */}
                                     {selectedProject.journal_url && (
                                         <a href={selectedProject.journal_url} target="_blank" rel="noreferrer" className="flex-1">
-                                            <Button variant="outline" className="w-full rounded-full py-6 border-gray-200 dark:border-white/10 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 transition-all">
+                                            <Button variant="outline" size='lg' className="w-full flex-1">
                                                 <BookOpen size={18} className="mr-2 text-blue-500" /> Lihat Jurnal
                                             </Button>
                                         </a>
@@ -226,8 +226,9 @@ const StudentProjects = ({ projects = [] }) => {
                                     {/* Tombol Tutup */}
                                     <Button
                                         onClick={() => setSelectedProject(null)}
+                                        className="w-full flex-1"
                                         variant="outline"
-                                        className="rounded-full py-6 px-10 border-gray-200 dark:border-white/10 dark:text-white"
+                                        size='lg'
                                     >
                                         Tutup
                                     </Button>

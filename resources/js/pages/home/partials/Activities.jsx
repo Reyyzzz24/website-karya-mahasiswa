@@ -136,7 +136,7 @@ const Activities = ({ activities = [] }) => {
             <Modal
                 isOpen={!!selectedActivity}
                 onClose={() => setSelectedActivity(null)}
-                title=""
+                title="Detail Kegiatan"
                 maxWidth="2xl"
                 noPadding={true}
             >
@@ -158,7 +158,7 @@ const Activities = ({ activities = [] }) => {
                                 "{selectedActivity.description}"
                             </p>
 
-                            <div className="flex flex-col gap-4 border-t border-gray-200 dark:border-white/10 pt-6">
+                            <div className="flex flex-col -mx-8 px-8 gap-4 border-gray-200 dark:border-white/10 pt-6">
                                 {/* Baris Tanggal */}
                                 <div className="flex items-center text-gray-500 dark:text-gray-400">
                                     <Calendar size={18} className="mr-3 text-blue-600 dark:text-blue-500" />
@@ -170,28 +170,26 @@ const Activities = ({ activities = [] }) => {
                                     <MapPin size={18} className="mr-3 text-blue-600 dark:text-blue-500" /> {selectedActivity.location}
                                 </div>
 
-                                {/* Baris Tombol Aksi */}
-                                <div className="flex justify-between items-center gap-4 mt-2">
-                                    <div>
-                                        {/* Tombol Video (Hanya muncul jika video_url tersedia) */}
-                                        {selectedActivity.video_url && (
-                                            <a
-                                                href={selectedActivity.video_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 text-sm font-bold text-red-600 dark:text-red-500 hover:underline"
-                                            >
-                                                <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                                    <svg size={14} viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M8 5v14l11-7z" /></svg>
-                                                </div>
-                                                Lihat Video Kegiatan
-                                            </a>
-                                        )}
-                                    </div>
+                                <div className="flex gap-4 mt-2"> {/* Tambahkan class 'flex' di sini */}
+                                    {/* Tombol Video (Hanya muncul jika video_url tersedia) */}
+                                    {selectedActivity.video_url && (
+                                        <Button
+                                            href={selectedActivity.video_url}
+                                            variant="destructive"
+                                            size='lg'
+                                            target="_blank"
+                                            className="w-full flex-1"
+                                        >
+                                            Lihat Video Kegiatan
+                                        </Button>
+                                    )}
 
                                     <Button
+                                        variant="outline"
+                                        target="_blank"
+                                        className="w-full flex-1"
+                                        size='lg'
                                         onClick={() => setSelectedActivity(null)}
-                                        className="bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full px-8 transition-colors"
                                     >
                                         Tutup
                                     </Button>
